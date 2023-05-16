@@ -1,6 +1,6 @@
 <template>
-  <loading v-if="!user.fetchingUser">LOADING</loading>
-  <div class="text-center" v-else>
+  <!-- <loading v-if="user.user.fetchingUser"></loading> -->
+  <div class="text-center" v-if="!user.user.fetchingUser">
     <span>Looks like It's your first time here. </span>
     <span
       >Please enter your username, It will be visible to other chat

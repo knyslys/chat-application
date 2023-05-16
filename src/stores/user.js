@@ -12,7 +12,7 @@ import { doc, getDoc, where, setDoc } from "firebase/firestore";
 export const useUserStore = defineStore("user", () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
-  const fetchingUser = ref(false);
+  const fetchingUser = ref(true);
   const user = ref({
     auth: false,
     uid: "0",
@@ -20,7 +20,7 @@ export const useUserStore = defineStore("user", () => {
   });
 
   onMounted(() => {
-    fetchingUser.value = true;
+    // fetchingUser.value = true;
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         user.value.auth = true;
@@ -48,11 +48,12 @@ export const useUserStore = defineStore("user", () => {
         user.value.uid = GoogleAuthProvider.credentialFromResult(result).uid;
         user.value.auth = true;
         // The signed-in user info.
-        window.localStorage.setItem("auth", "1");
+        fetchingUser.value = false;
         const user = result.user;
         //...
       })
       .catch((error) => {
+        fetchingUser.value = false;
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -62,6 +63,7 @@ export const useUserStore = defineStore("user", () => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         //...
       });
+    fetchingUser.value = false;
   };
 
   const logOut = () => {
@@ -70,13 +72,14 @@ export const useUserStore = defineStore("user", () => {
         user.value.auth = false;
         user.value.uid = "0";
         localStorage.removeItem("auth");
+        fetchingUser.value = false;
       })
       .catch((error) => {});
   };
 
   const checkIfUserExist = () => {
     console.log("testas");
-
+    user.value.fetchingUser = true;
     const ref = doc(db, "users", user.value.uid);
     let exist = undefined;
 
@@ -89,9 +92,11 @@ export const useUserStore = defineStore("user", () => {
         } else {
           user.value.exist = false;
         }
+        user.value.fetchingUser = false;
       })
       .catch((er) => {
         console.log(er);
+        user.value.fetchingUser = false;
       });
     console.log("get user exist function:" + exist);
   };
@@ -104,6 +109,8 @@ export const useUserStore = defineStore("user", () => {
     await setDoc(ref, {
       nickname: nickname,
     });
+    user.value.exist = true;
+    user.value.nickname = nickname;
   };
   return { user, signIn, logOut, checkIfUserExist, registerUser, fetchingUser };
 });
