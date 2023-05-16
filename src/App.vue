@@ -1,7 +1,8 @@
 <template>
   <main class="min-h-screen flex place-items-center">
-    <sign-in v-if="!user.user.auth"></sign-in>
-    <Chat v-else>Prisijungta</Chat>
+    <loading v-if="user.fetchingUser">LOADING</loading>
+    <sign-in v-else-if="!user.user.auth && !user.fetchingUser"></sign-in>
+    <Chat v-else-if="user.user.auth && !user.fetchingUser"></Chat>
   </main>
 </template>
 

@@ -3,3 +3,9 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.loading-gif {
+  top: 30%;
+  left: 50%;
+  position: absolute;
+}
