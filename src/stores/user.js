@@ -102,8 +102,6 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const registerUser = async (username) => {
-    // return new Promise((resolve, reject) => {
-    // });
     const nickname = username.toLowerCase();
     const ref = doc(db, "users", user.value.uid);
     await setDoc(ref, {

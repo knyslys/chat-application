@@ -8,9 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@animxyz/vue3": "^0.6.7",
     "firebase": "^9.22.0",
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.36",
+    "uniqid": "^5.4.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0"
   },
