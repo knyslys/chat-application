@@ -9,6 +9,7 @@ import {
 import { ref, onMounted } from "vue";
 import { db } from "../firebase/index.js";
 import { doc, getDoc, where, setDoc } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 export const useUserStore = defineStore("user", () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
@@ -37,7 +38,6 @@ export const useUserStore = defineStore("user", () => {
         fetchingUser.value = false;
       }
     });
-    console.log("testas: " + user.value.uid);
   });
 
   const signIn = () => {
@@ -78,6 +78,13 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const checkIfUserExist = () => {
+    const d = doc(db, "users", user.value.uid);
+
+    console.log("testas: " + user.value.uid);
+    onSnapshot(d, (snapshot) => {
+      user.value.lobbyId = snapshot.data().lobby;
+    });
+
     console.log("testas");
     user.value.fetchingUser = true;
     const ref = doc(db, "users", user.value.uid);

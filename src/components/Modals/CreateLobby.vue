@@ -1,6 +1,6 @@
 <template>
   <div
-    class="modal fixed w-screen h-screen flex flex-col justify-center"
+    class="modal fixed w-screen h-screen flex flex-col justify-center place-items-center"
     v-if="props.toggle"
   >
     <div
