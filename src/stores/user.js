@@ -20,24 +20,22 @@ export const useUserStore = defineStore("user", () => {
     exist: undefined,
   });
 
-  onMounted(() => {
-    // fetchingUser.value = true;
-    onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        user.value.auth = true;
-        user.value.uid = authUser.uid;
-        console.log("auth: " + authUser.uid);
-        console.log("authexist: " + user.value.exist);
-        checkIfUserExist();
-        fetchingUser.value = false;
-      } else {
-        user.value.auth = false;
-        user.value.uid = "0";
-        user.value.exist = undefined;
-        console.log("NE");
-        fetchingUser.value = false;
-      }
-    });
+  // fetchingUser.value = true;
+  onAuthStateChanged(auth, (authUser) => {
+    if (authUser) {
+      user.value.auth = true;
+      user.value.uid = authUser.uid;
+      console.log("auth: " + authUser.uid);
+      console.log("authexist: " + user.value.exist);
+      checkIfUserExist();
+      fetchingUser.value = false;
+    } else {
+      user.value.auth = false;
+      user.value.uid = "0";
+      user.value.exist = undefined;
+      console.log("NE");
+      fetchingUser.value = false;
+    }
   });
 
   const signIn = () => {

@@ -57,7 +57,6 @@ const props = defineProps({
 
 const makeLobby = async () => {
   lobbyId = uniqid();
-
   const dUser = doc(db, "users", user.user.uid);
   const alreadyHasLobby = await getDoc(dUser);
   if (alreadyHasLobby.data().lobby) {

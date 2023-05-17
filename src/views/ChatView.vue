@@ -8,6 +8,9 @@
 import { useUserStore } from "../stores/user.js";
 import SignIn from "../components/SignIn.vue";
 import Chat from "../components/LoggedIn/Chat/Chat.vue";
+import router from "../router";
+import { onMounted } from "vue";
+
 const user = useUserStore();
 </script>
 
