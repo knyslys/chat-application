@@ -18,7 +18,7 @@
         <form class="flex flex-col gap-y-2" @submit.prevent="goToLobby">
           <input
             type="text"
-            v-model.number="lobbyCode"
+            v-model.trim="lobbyCode"
             placeholder="Lobby Code"
             class="bg-lime-200 text-center"
           />
@@ -51,8 +51,12 @@ const goToLobby = async () => {
   try {
     const d = doc(db, "chats", lobbyCode.value);
     const get = await getDoc(d);
-    error.value = "";
-    router.push({ path: `/chat&id=${lobbyCode.value}` });
+    if (get.data() !== undefined) {
+      error.value = "";
+      router.push({ path: `/chat&id=${lobbyCode.value}` });
+    } else {
+      error.value = "Something went wrong or lobby doesn't exist";
+    }
   } catch (e) {
     error.value = "Something went wrong or lobby doesn't exist";
   }

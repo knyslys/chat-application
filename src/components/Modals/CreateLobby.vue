@@ -20,7 +20,10 @@
         <button @click="makeLobby" v-if="!lobbyExist && !lobbyCreated">
           Create
         </button>
-        <span v-if="lobbyCreated">Your lobby code: {{ lobbyId }}</span>
+        <div v-if="lobbyCreated">
+          <span>Your lobby code: {{ lobbyId }}</span>
+          <span @click="copyToCliboard">Coppy</span>
+        </div>
       </div>
     </div>
   </div>

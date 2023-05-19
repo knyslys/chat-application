@@ -10,12 +10,15 @@ import { ref, onMounted } from "vue";
 import { db } from "../firebase/index.js";
 import { doc, getDoc, where, setDoc } from "firebase/firestore";
 import { onSnapshot } from "firebase/firestore";
+import { useRouter } from "vue-router";
+
 export const useUserStore = defineStore("user", () => {
+  const router = useRouter();
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const fetchingUser = ref(true);
   const user = ref({
-    auth: false,
+    // auth: false,
     uid: "0",
     exist: undefined,
   });
@@ -37,6 +40,11 @@ export const useUserStore = defineStore("user", () => {
       fetchingUser.value = false;
     }
   });
+
+  const ifLoggedIn = async () => {
+    console.log(auth.currentUser);
+    return auth.currentUser;
+  };
 
   const signIn = () => {
     signInWithPopup(auth, provider)
@@ -71,6 +79,7 @@ export const useUserStore = defineStore("user", () => {
         user.value.uid = "0";
         localStorage.removeItem("auth");
         fetchingUser.value = false;
+        router.push({ path: "/" });
       })
       .catch((error) => {});
   };
@@ -115,5 +124,13 @@ export const useUserStore = defineStore("user", () => {
     user.value.exist = true;
     user.value.nickname = nickname;
   };
-  return { user, signIn, logOut, checkIfUserExist, registerUser, fetchingUser };
+  return {
+    user,
+    signIn,
+    logOut,
+    checkIfUserExist,
+    registerUser,
+    fetchingUser,
+    ifLoggedIn,
+  };
 });

@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@animxyz/vue3": "^0.6.7",
+    "@formkit/auto-animate": "^1.0.0-beta.6",
     "firebase": "^9.22.0",
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.36",
+    "smile2emoji": "^3.7.0",
     "uniqid": "^5.4.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0"
