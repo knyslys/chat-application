@@ -15,16 +15,24 @@
         <span>Enter a Lobby Code</span>
       </div>
       <div class="modal-center text-center bg-white p-2">
-        <form class="flex flex-col gap-y-2" @submit.prevent="goToLobby">
+        <form
+          class="flex flex-col gap-y-2 justify-center place-items-center"
+          @submit.prevent="goToLobby"
+        >
+          <Icon icon="mdi:content-paste" @click="pasteId" class="text-lg" />
           <input
             type="text"
             v-model.trim="lobbyCode"
             placeholder="Lobby Code"
-            class="bg-lime-200 text-center"
+            class="bg-lime-200 text-center place-self-stretch"
           />
-          <button @click="makeLobby" v-if="!lobbyExist && !lobbyCreated">
+          <the-button
+            class="place-self-stretch"
+            @click="makeLobby"
+            v-if="!lobbyExist && !lobbyCreated"
+          >
             Join
-          </button>
+          </the-button>
           <span class="text-red-700 text-sm" v-if="error !== ''">{{
             error
           }}</span>
@@ -39,6 +47,8 @@ import { ref } from "vue";
 import { db } from "../../firebase";
 import { doc, getDoc } from "@firebase/firestore";
 import router from "../../router";
+import { Icon } from "@iconify/vue";
+import TheButton from "../UI/TheButton.vue";
 const props = defineProps({
   toggle: {
     type: Boolean,
@@ -60,6 +70,15 @@ const goToLobby = async () => {
   } catch (e) {
     error.value = "Something went wrong or lobby doesn't exist";
   }
+};
+
+const pasteId = () => {
+  navigator.clipboard
+    .readText()
+    .then((text) => {
+      lobbyCode.value = text;
+    })
+    .catch((err) => {});
 };
 </script>
 

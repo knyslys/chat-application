@@ -5,6 +5,9 @@
     >
       <top-bar>
         <the-button @click="router.push({ path: '/' })">Back</the-button>
+        <template #id
+          ><span>Current Lobby id: {{ lobbyId }}</span></template
+        >
       </top-bar>
       <span class="text-red-500" v-if="error !== ''">{{ error }}</span>
       <div v-else class="chat-logs flex flex-col place-content-between">
@@ -19,14 +22,21 @@
       </div>
       <form
         @submit.prevent="writeMessage"
-        class="flex place-items-center gap-x-2 p-4 align-text-top"
+        class="flex place-items-center gap-x-2 p-4 align-text-top md:justify-stretch"
       >
         <input
           type="text"
+          maxlength="150"
           v-model.trim="typedMessage"
           class="max-h-40 rounded-md shadow-md pb-20 pl-2"
         />
-        <button type="submit">Send</button>
+        <button type="submit">
+          <Icon
+            icon="bi:send-fill"
+            :class="{ typed: typedSuccess }"
+            class="text-2xl"
+          />
+        </button>
       </form>
     </div>
   </div>
@@ -60,6 +70,7 @@ import { onUpdated } from "vue";
 import Message from "./Message.vue";
 import TheButton from "../../../UI/TheButton.vue";
 import { onBeforeUpdate } from "vue";
+import { Icon } from "@iconify/vue";
 const lobbyId = ref();
 const rtr = useRoute();
 const user = useUserStore();
@@ -67,16 +78,26 @@ const error = ref("");
 const canShowChat = ref(false);
 const chatsLogs = ref([]);
 const typedMessage = ref("");
-
+const typedSuccess = ref(false);
+const typedDelay = ref(false);
 const writeMessage = () => {
   const d = doc(db, "chats", lobbyId.value);
   const c = collection(d, lobbyId.value);
+  if (typedMessage.value.length < 1) return;
+  if (typedDelay.value) return;
+  typedDelay.value = true;
+  typedSuccess.value = true;
   addDoc(c, {
     time: new Date().getTime(),
     author: user.user.nickname,
     message: typedMessage.value,
   });
   typedMessage.value = "";
+
+  setTimeout(() => {
+    typedSuccess.value = false;
+    typedDelay.value = false;
+  }, 1000);
 };
 
 onBeforeUpdate(async () => {
@@ -131,6 +152,13 @@ onMounted(async () => {
 <style scoped>
 input {
   /* height: 5rem; */
+  min-width: 50%;
+}
+
+.typed {
+  transition: 1s all linear;
+  transform: rotate(360deg);
+  color: white;
 }
 .chat-logs {
   min-height: 30rem;

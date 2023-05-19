@@ -17,9 +17,9 @@
       <div class="modal-center text-center bg-white p-2">
         <!-- <span class="font-bold" v-if="!lobbyExist"> {{ lobbyId }}</span>
         <span class="font-bold" v-else>Delete current lobby!</span> -->
-        <button @click="makeLobby" v-if="!lobbyExist && !lobbyCreated">
+        <the-button @click="makeLobby" v-if="!lobbyExist && !lobbyCreated">
           Create
-        </button>
+        </the-button>
         <div v-if="lobbyCreated">
           <span>Your lobby code: {{ lobbyId }}</span>
           <span @click="copyToCliboard">Coppy</span>
@@ -45,7 +45,7 @@ import { onBeforeUpdate } from "vue";
 import { onBeforeMount } from "vue";
 import { useUserStore } from "../../stores/user";
 import { ref, watch } from "vue";
-
+import TheButton from "../UI/TheButton.vue";
 const user = useUserStore();
 const lobbyExist = ref(false);
 const lobbyCreated = ref(false);
