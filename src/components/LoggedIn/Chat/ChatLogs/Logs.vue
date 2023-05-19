@@ -48,6 +48,7 @@ import TopBar from "../TopBar.vue";
 import router from "../../../../router";
 import { useUserStore } from "../../../../stores/user";
 import {
+  serverTimestamp,
   collection,
   doc,
   getDoc,
@@ -88,7 +89,7 @@ const writeMessage = () => {
   typedDelay.value = true;
   typedSuccess.value = true;
   addDoc(c, {
-    time: new Date().getTime(),
+    time: serverTimestamp(),
     author: user.user.nickname,
     message: typedMessage.value,
   });
